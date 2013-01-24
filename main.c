@@ -17,7 +17,7 @@ int main (int argc, char* argv[]) {
 
   Animal.delete(&cat);
 
-  Dog.delete(dog);
+  Animal.delete((animal_t*)dog);
   free(dog);
 
   return 0;

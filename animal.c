@@ -10,6 +10,7 @@ int animal_new(animal_t* self, const char* type, const char* name) {
   }
 
   self->vtable.speak = NULL;
+  self->vtable.delete = NULL;
 
   self->name = malloc(strlen(name)+1);
   strcpy(self->name, name);
@@ -24,6 +25,10 @@ int animal_new(animal_t* self, const char* type, const char* name) {
 }
 
 int animal_delete(animal_t* self) {
+  if (self->vtable.delete != NULL) {
+    return self->vtable.delete(self);
+  }
+
   if (self->name != NULL) {
     free(self->name);
     self->name = NULL;

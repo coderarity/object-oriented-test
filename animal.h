@@ -10,6 +10,7 @@
 typedef struct {
   struct {
     void (*speak)(void* self);
+    int (*delete)(void* self);
   } vtable;
 
   void* private;

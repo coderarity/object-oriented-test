@@ -10,6 +10,12 @@ void dog_speak (void* _self) {
   printf("'woof!' says the %s %s dog!\n", Dog.getSize(self), Dog.getFurColor(self));
 }
 
+int dog_parent_delete(void* _self) {
+  dog_t* self = _self;
+  self->super.vtable.delete = NULL;
+  Dog.delete(self);
+}
+
 int dog_new (dog_t* self, const char* name, const char* furColor, const char* size) {
   if (furColor == NULL || size == NULL) {
     return ERROR_VAL;
@@ -18,6 +24,7 @@ int dog_new (dog_t* self, const char* name, const char* furColor, const char* si
   Animal.new(&(self->super), "dog", name);
 
   self->super.vtable.speak = &dog_speak;
+  self->super.vtable.delete = &dog_parent_delete;
 
   self->private = malloc(sizeof(dog_p));
   dog_p* private = self->private;
