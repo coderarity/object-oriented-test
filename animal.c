@@ -1,20 +1,42 @@
 #include "animal.h"
 
-int animal_new(animal_t* self, const char* type) {
-  if (type == NULL) {
+typedef struct {
+  char* type;
+} animal_p;
+
+int animal_new(animal_t* self, const char* type, const char* name) {
+  if (type == NULL || name == NULL) {
     return ERROR_VAL;
   }
 
-  self->type = malloc(strlen(type)+1);
-  strcpy(self->type, type);
+  self->vtable.speak = NULL;
+
+  self->name = malloc(strlen(name)+1);
+  strcpy(self->name, name);
+
+  self->private = malloc(sizeof(animal_p));
+  animal_p* private = self->private;
+
+  private->type = malloc(strlen(type) + 1);
+  strcpy(private->type, type);
 
   return SUCCESS_VAL;
 }
 
 int animal_delete(animal_t* self) {
-  if (self->type != NULL) {
-    free(self->type);
-    self->type = NULL;
+  if (self->name != NULL) {
+    free(self->name);
+    self->name = NULL;
+  }
+
+  if (self->private != NULL) {
+    animal_p* private = self->private;
+    if (private->type != NULL) {
+      free(private->type);
+      private->type = NULL;
+    }
+    free(private);
+    self->private = NULL;
   }
 
   return SUCCESS_VAL;
@@ -25,5 +47,10 @@ void animal_speak(animal_t* self) {
     return self->vtable.speak(self);
   }
 
-  printf("This %s cannot speak!", self->type);
+  printf("%s cannot speak. Poor %s!\n", self->name, Animal.getType(self));
+}
+
+const char* animal_getType(animal_t* self) {
+  animal_p* private = self->private;
+  return private->type;
 }

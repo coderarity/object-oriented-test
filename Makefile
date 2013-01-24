@@ -1,5 +1,5 @@
 build:
-	gcc main.c animal.c dog.c -o test
+	gcc -g main.c animal.c dog.c -o test
 
 memcheck:
 	valgrind ./test

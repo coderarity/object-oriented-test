@@ -11,13 +11,12 @@
 
 typedef struct {
   animal_t super;
-  char* furColor;
-  char* size;
+  void* private;
 } dog_t;
 
 // Creates a dog, takes fur color and size. Returns pointer to dog. This copies
 // the strings.
-int dog_new (dog_t* self, const char* furColor, const char* size);
+int dog_new (dog_t* self, const char* name, const char* furColor, const char* size);
 
 // Deletes a dog. Takes pointer to dog created with dog_ctor D:
 int dog_delete (dog_t* self);
@@ -32,7 +31,7 @@ const char* dog_getSize (dog_t* self);
 
 // Create a nice structure to expose them in :D
 static const struct {
-  int (*new)(dog_t*, const char* furColor, const char* size);
+  int (*new)(dog_t*, const char*, const char*, const char*);
   int (*delete)(dog_t*);
 
   const char* (*getFurColor)(dog_t*);
