@@ -31,3 +31,8 @@ make clean
 ```
 make memcheck
 ```
+
+# License
+
+All code and documentation in this repository is released under the MIT license.
+See [license text](http://coderarity.mit-license.org/).
